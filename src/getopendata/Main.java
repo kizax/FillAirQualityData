@@ -121,12 +121,7 @@ public class Main {
                     }
 
                     //   同一測站同日前一小時
-                    try {
-                        refValues[0] = airQualityData.getMonitorValue(index - 1);
-                    } catch (ArrayIndexOutOfBoundsException e) {
-                        LogUtils.log(logFileWriter, String.format("%1$s\tLine %2$d air quality data %3$s / %4$s at %5$s %6$d o'clock doesn't have 前一小時 value",
-                                TimestampUtils.getTimestampStr(), airQualityData.getLineNum(), airQualityData.getSiteName(), airQualityData.getItemName(), airQualityData.getMonitorDateStr(), index));
-                    }
+                    refValues[0] = getMonitorValue(airQualityData, airQualityData, index - 1, "前一小時", logFileWriter);
 
                     //前一日同時、前一日前一小時、前一日後一小時
                     Calendar yesterdayCalendar = Calendar.getInstance();
@@ -138,35 +133,9 @@ public class Main {
                             airQualityData.getItemName());
 
                     AirQualityData yesterdayAirQualityData = airQualityDataMap.get(key);
-                    try {
-                        refValues[1] = yesterdayAirQualityData.getMonitorValue(index - 1);
-                    } catch (ArrayIndexOutOfBoundsException e) {
-                        LogUtils.log(logFileWriter, String.format("%1$s\tLine %2$d air quality data %3$s / %4$s at %5$s %6$d o'clock doesn't have 前一天前一小時 value",
-                                TimestampUtils.getTimestampStr(), airQualityData.getLineNum(), airQualityData.getSiteName(), airQualityData.getItemName(), airQualityData.getMonitorDateStr(), index));
-                    } catch (NullPointerException e) {
-                        LogUtils.log(logFileWriter, String.format("%1$s\tLine %2$d air quality data %3$s / %4$s at %5$s %6$d o'clock doesn't have 前一天前一小時 value",
-                                TimestampUtils.getTimestampStr(), airQualityData.getLineNum(), airQualityData.getSiteName(), airQualityData.getItemName(), airQualityData.getMonitorDateStr(), index));
-                    }
-
-                    try {
-                        refValues[2] = yesterdayAirQualityData.getMonitorValue(index);
-                    } catch (ArrayIndexOutOfBoundsException e) {
-                        LogUtils.log(logFileWriter, String.format("%1$s\tLine %2$d air quality data %3$s / %4$s at %5$s %6$d o'clock doesn't have 前一天同一小時 value",
-                                TimestampUtils.getTimestampStr(), airQualityData.getLineNum(), airQualityData.getSiteName(), airQualityData.getItemName(), airQualityData.getMonitorDateStr(), index));
-                    } catch (NullPointerException e) {
-                        LogUtils.log(logFileWriter, String.format("%1$s\tLine %2$d air quality data %3$s / %4$s at %5$s %6$d o'clock doesn't have 前一天同一小時 value",
-                                TimestampUtils.getTimestampStr(), airQualityData.getLineNum(), airQualityData.getSiteName(), airQualityData.getItemName(), airQualityData.getMonitorDateStr(), index));
-                    }
-
-                    try {
-                        refValues[3] = yesterdayAirQualityData.getMonitorValue(index + 1);
-                    } catch (ArrayIndexOutOfBoundsException e) {
-                        LogUtils.log(logFileWriter, String.format("%1$s\tLine %2$d air quality data %3$s / %4$s at %5$s %6$d o'clock doesn't have 前一天後一小時 value",
-                                TimestampUtils.getTimestampStr(), airQualityData.getLineNum(), airQualityData.getSiteName(), airQualityData.getItemName(), airQualityData.getMonitorDateStr(), index));
-                    } catch (NullPointerException e) {
-                        LogUtils.log(logFileWriter, String.format("%1$s\tLine %2$d air quality data %3$s / %4$s at %5$s %6$d o'clock doesn't have 前一天後一小時 value",
-                                TimestampUtils.getTimestampStr(), airQualityData.getLineNum(), airQualityData.getSiteName(), airQualityData.getItemName(), airQualityData.getMonitorDateStr(), index));
-                    }
+                    refValues[1] = getMonitorValue(airQualityData, yesterdayAirQualityData, index - 1, "前一天前一小時", logFileWriter);
+                    refValues[2] = getMonitorValue(airQualityData, yesterdayAirQualityData, index, "前一天同一小時", logFileWriter);
+                    refValues[3] = getMonitorValue(airQualityData, yesterdayAirQualityData, index + 1, "前一天後一小時", logFileWriter);
 
                     //前一週同時、前一週前一小時、前一週後一小時
                     Calendar lastWeekCalendar = Calendar.getInstance();
@@ -178,35 +147,9 @@ public class Main {
                             airQualityData.getItemName());
 
                     AirQualityData lastWeekAirQualityData = airQualityDataMap.get(key);
-                    try {
-                        refValues[4] = lastWeekAirQualityData.getMonitorValue(index - 1);
-                    } catch (ArrayIndexOutOfBoundsException e) {
-                        LogUtils.log(logFileWriter, String.format("%1$s\tLine %2$d air quality data %3$s / %4$s at %5$s %6$d o'clock doesn't have 前一週前一小時 value",
-                                TimestampUtils.getTimestampStr(), airQualityData.getLineNum(), airQualityData.getSiteName(), airQualityData.getItemName(), airQualityData.getMonitorDateStr(), index));
-                    } catch (NullPointerException e) {
-                        LogUtils.log(logFileWriter, String.format("%1$s\tLine %2$d air quality data %3$s / %4$s at %5$s %6$d o'clock doesn't have 前一週前一小時 value",
-                                TimestampUtils.getTimestampStr(), airQualityData.getLineNum(), airQualityData.getSiteName(), airQualityData.getItemName(), airQualityData.getMonitorDateStr(), index));
-                    }
-
-                    try {
-                        refValues[5] = lastWeekAirQualityData.getMonitorValue(index);
-                    } catch (ArrayIndexOutOfBoundsException e) {
-                        LogUtils.log(logFileWriter, String.format("%1$s\tLine %2$d air quality data %3$s / %4$s at %5$s %6$d o'clock doesn't have 前一週同一小時 value",
-                                TimestampUtils.getTimestampStr(), airQualityData.getLineNum(), airQualityData.getSiteName(), airQualityData.getItemName(), airQualityData.getMonitorDateStr(), index));
-                    } catch (NullPointerException e) {
-                        LogUtils.log(logFileWriter, String.format("%1$s\tLine %2$d air quality data %3$s / %4$s at %5$s %6$d o'clock doesn't have 前一週同一小時 value",
-                                TimestampUtils.getTimestampStr(), airQualityData.getLineNum(), airQualityData.getSiteName(), airQualityData.getItemName(), airQualityData.getMonitorDateStr(), index));
-                    }
-
-                    try {
-                        refValues[6] = lastWeekAirQualityData.getMonitorValue(index + 1);
-                    } catch (ArrayIndexOutOfBoundsException e) {
-                        LogUtils.log(logFileWriter, String.format("%1$s\tLine %2$d air quality data %3$s / %4$s at %5$s %6$d o'clock doesn't have 前一週後一小時 value",
-                                TimestampUtils.getTimestampStr(), airQualityData.getLineNum(), airQualityData.getSiteName(), airQualityData.getItemName(), airQualityData.getMonitorDateStr(), index));
-                    } catch (NullPointerException e) {
-                        LogUtils.log(logFileWriter, String.format("%1$s\tLine %2$d air quality data %3$s / %4$s at %5$s %6$d o'clock doesn't have 前一週後一小時 value",
-                                TimestampUtils.getTimestampStr(), airQualityData.getLineNum(), airQualityData.getSiteName(), airQualityData.getItemName(), airQualityData.getMonitorDateStr(), index));
-                    }
+                    refValues[4] = getMonitorValue(airQualityData, lastWeekAirQualityData, index - 1, "前一週前一小時", logFileWriter);
+                    refValues[5] = getMonitorValue(airQualityData, lastWeekAirQualityData, index, "前一週同一小時", logFileWriter);
+                    refValues[6] = getMonitorValue(airQualityData, lastWeekAirQualityData, index + 1, "前一週後一小時", logFileWriter);
 
                     //前一年同週同時、前一年同週前一小時、前一年同週後一小時
                     Calendar prevYearCalendar = Calendar.getInstance();
@@ -218,35 +161,9 @@ public class Main {
                             airQualityData.getItemName());
 
                     AirQualityData prevYearAirQualityData = airQualityDataMap.get(key);
-                    try {
-                        refValues[7] = prevYearAirQualityData.getMonitorValue(index - 1);
-                    } catch (ArrayIndexOutOfBoundsException e) {
-                        LogUtils.log(logFileWriter, String.format("%1$s\tLine %2$d air quality data %3$s / %4$s at %5$s %6$d o'clock doesn't have 前一年同週前一小時 value",
-                                TimestampUtils.getTimestampStr(), airQualityData.getLineNum(), airQualityData.getSiteName(), airQualityData.getItemName(), airQualityData.getMonitorDateStr(), index));
-                    } catch (NullPointerException e) {
-                        LogUtils.log(logFileWriter, String.format("%1$s\tLine %2$d air quality data %3$s / %4$s at %5$s %6$d o'clock doesn't have 前一年同週前一小時 value",
-                                TimestampUtils.getTimestampStr(), airQualityData.getLineNum(), airQualityData.getSiteName(), airQualityData.getItemName(), airQualityData.getMonitorDateStr(), index));
-                    }
-
-                    try {
-                        refValues[8] = prevYearAirQualityData.getMonitorValue(index);
-                    } catch (ArrayIndexOutOfBoundsException e) {
-                        LogUtils.log(logFileWriter, String.format("%1$s\tLine %2$d air quality data %3$s / %4$s at %5$s %6$d o'clock doesn't have 前一年同週同一小時 value",
-                                TimestampUtils.getTimestampStr(), airQualityData.getLineNum(), airQualityData.getSiteName(), airQualityData.getItemName(), airQualityData.getMonitorDateStr(), index));
-                    } catch (NullPointerException e) {
-                        LogUtils.log(logFileWriter, String.format("%1$s\tLine %2$d air quality data %3$s / %4$s at %5$s %6$d o'clock doesn't have 前一年同週同一小時 value",
-                                TimestampUtils.getTimestampStr(), airQualityData.getLineNum(), airQualityData.getSiteName(), airQualityData.getItemName(), airQualityData.getMonitorDateStr(), index));
-                    }
-
-                    try {
-                        refValues[9] = prevYearAirQualityData.getMonitorValue(index + 1);
-                    } catch (ArrayIndexOutOfBoundsException e) {
-                        LogUtils.log(logFileWriter, String.format("%1$s\tLine %2$d air quality data %3$s / %4$s at %5$s %6$d o'clock doesn't have 前一年同週後一小時 value",
-                                TimestampUtils.getTimestampStr(), airQualityData.getLineNum(), airQualityData.getSiteName(), airQualityData.getItemName(), airQualityData.getMonitorDateStr(), index));
-                    } catch (NullPointerException e) {
-                        LogUtils.log(logFileWriter, String.format("%1$s\tLine %2$d air quality data %3$s / %4$s at %5$s %6$d o'clock doesn't have 前一年同週後一小時 value",
-                                TimestampUtils.getTimestampStr(), airQualityData.getLineNum(), airQualityData.getSiteName(), airQualityData.getItemName(), airQualityData.getMonitorDateStr(), index));
-                    }
+                    refValues[7] = getMonitorValue(airQualityData, prevYearAirQualityData, index - 1, "前一年同週前一小時", logFileWriter);
+                    refValues[8] = getMonitorValue(airQualityData, prevYearAirQualityData, index, "前一年同週同一小時", logFileWriter);
+                    refValues[9] = getMonitorValue(airQualityData, prevYearAirQualityData, index + 1, "前一年同週後一小時", logFileWriter);
 
                     int validValueCount = 0;
                     float sum = 0;
@@ -263,8 +180,11 @@ public class Main {
                         LogUtils.log(logFileWriter, String.format("%1$s\tLine %2$d air quality data %3$s / %4$s at %5$s %6$d o'clock filled whth %7$f",
                                 TimestampUtils.getTimestampStr(), airQualityData.getLineNum(), airQualityData.getSiteName(), airQualityData.getItemName(), airQualityData.getMonitorDateStr(), index, avg));
                     } else {
-                        LogUtils.log(logFileWriter, String.format("%1$s\tLine %2$d air quality data %3$s / %4$s at %5$s %6$d o'clock has leaked value bu not filled",
+                        LogUtils.log(logFileWriter, String.format("%1$s\tLine %2$d air quality data %3$s / %4$s at %5$s %6$d o'clock has leaked value but not filled",
                                 TimestampUtils.getTimestampStr(), airQualityData.getLineNum(), airQualityData.getSiteName(), airQualityData.getItemName(), airQualityData.getMonitorDateStr(), index));
+                        LogUtils.log(logFileWriter, String.format("%1$s\tValid value count: %2$d, %3$s",
+                                TimestampUtils.getTimestampStr(), validValueCount, convertArrayToStr(refValues)));
+
                     }
                 }
             }
@@ -300,8 +220,35 @@ public class Main {
         }
     }
 
+    private static String convertArrayToStr(float[] floatArray) {
+        String str = "";
+        int count = 0;
+        for (float f : floatArray) {
+            str += ("[" + count + "] " + Float.toString(f) + " ");
+            count++;
+        }
+        return str;
+    }
+
     private static void writeCsvFile(FileWriter csvFileWriter, String record) {
         WriteThread writerThread = new WriteThread(csvFileWriter, record);
         writerThread.start();
+    }
+
+    private static float getMonitorValue(AirQualityData airQualityData, AirQualityData refAirQualityData, int index, String str, FileWriter logFileWriter) {
+
+        float monitorValue = AirQualityData.NOT_SET;
+        try {
+            monitorValue = refAirQualityData.getMonitorValue(index - 1);
+        } catch (ArrayIndexOutOfBoundsException e) {
+        } catch (NullPointerException e) {
+        }
+        if (monitorValue == AirQualityData.NOT_SET) {
+//            LogUtils.log(logFileWriter, String.format("%1$s\tLine %2$d air quality data %3$s / %4$s at %5$s %6$d o'clock doesn't have %7$s value",
+//                    TimestampUtils.getTimestampStr(), airQualityData.getLineNum(), airQualityData.getSiteName(),
+//                    airQualityData.getItemName(), airQualityData.getMonitorDateStr(), index, str));
+        }
+
+        return monitorValue;
     }
 }

@@ -9,8 +9,6 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -254,7 +252,6 @@ public class AirQualityData {
     }
 
     /**
-     * @param monitorValue00 the monitorValue00 to set
      */
     public void setMonitorValue(float monitorValue, int index) {
         this.monitorValues[index] = monitorValue;
