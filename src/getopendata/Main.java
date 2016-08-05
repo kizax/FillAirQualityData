@@ -112,7 +112,7 @@ public class Main {
 
 //                    LogUtils.log(logFileWriter, String.format(
 //                            "%1$s\tLine %2$d air quality data %3$s / %4$s at %5$s %6$d o'clock has leaked value",
-//                            TimestampUtils.getTimestampStr(), airQualityData.getLineNum(), airQualityData.getSiteName(), 
+//                            TimestampUtils.getTimestampStr(), airQualityData.getLineNum(), airQualityData.getSiteName(),
 //                            airQualityData.getItemName(), airQualityData.getMonitorDateStr(), index));
                     //初始化參考值
                     float[] refValues = new float[10];
@@ -127,9 +127,10 @@ public class Main {
                     }
 
                     //前一日同時、前一日前一小時、前一日後一小時
-                    Calendar calendar = Calendar.getInstance();
-                    calendar.add(Calendar.DATE, -1);
-                    Date yesterday = calendar.getTime();
+                    Calendar yesterdayCalendar = Calendar.getInstance();
+                    yesterdayCalendar.setTime(airQualityData.getMonitorDate());
+                    yesterdayCalendar.add(Calendar.DATE, -1);
+                    Date yesterday = yesterdayCalendar.getTime();
                     key = String.format("%1$s %2$s %3$s",
                             airQualityData.getSiteName(), TimestampUtils.dateToStr(yesterday),
                             airQualityData.getItemName());
@@ -148,13 +149,14 @@ public class Main {
                     }
 
                     try {
-                        refValues[2] = yesterdayAirQualityData.getMonitorValue(index + 1);
+                        refValues[3] = yesterdayAirQualityData.getMonitorValue(index + 1);
                     } catch (ArrayIndexOutOfBoundsException e) {
                     } catch (NullPointerException e) {
                     }
 
                     //前一週同時、前一週前一小時、前一週後一小時
                     Calendar lastWeekCalendar = Calendar.getInstance();
+                    lastWeekCalendar.setTime(airQualityData.getMonitorDate());
                     lastWeekCalendar.add(Calendar.DATE, -7);
                     Date lastWeek = lastWeekCalendar.getTime();
                     key = String.format("%1$s %2$s %3$s",
@@ -182,6 +184,7 @@ public class Main {
 
                     //前一年同週同時、前一年同週前一小時、前一年同週後一小時
                     Calendar prevYearCalendar = Calendar.getInstance();
+                    prevYearCalendar.setTime(airQualityData.getMonitorDate());
                     prevYearCalendar.add(Calendar.YEAR, -1);
                     Date prevYear = prevYearCalendar.getTime();
                     key = String.format("%1$s %2$s %3$s",
@@ -221,6 +224,9 @@ public class Main {
                         airQualityData.setMonitorValue(avg, index);
                         LogUtils.log(logFileWriter, String.format("%1$s\tLine %2$d air quality data %3$s / %4$s at %5$s %6$d o'clock filled whth %7$f",
                                 TimestampUtils.getTimestampStr(), airQualityData.getLineNum(), airQualityData.getSiteName(), airQualityData.getItemName(), airQualityData.getMonitorDateStr(), index, avg));
+                    } else {
+                        LogUtils.log(logFileWriter, String.format("%1$s\tLine %2$d air quality data %3$s / %4$s at %5$s %6$d o'clock has leaked value bu not filled",
+                                TimestampUtils.getTimestampStr(), airQualityData.getLineNum(), airQualityData.getSiteName(), airQualityData.getItemName(), airQualityData.getMonitorDateStr(), index));
                     }
                 }
             }

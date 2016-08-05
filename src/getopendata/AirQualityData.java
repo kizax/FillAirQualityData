@@ -197,7 +197,7 @@ public class AirQualityData {
     }
 
     private String getMonitorValueStr(float monitorValue) {
-        String monitorValueStr = "X";
+        String monitorValueStr = "";
         if (monitorValue != NOT_SET) {
             monitorValueStr = Float.toString(monitorValue);
         }
