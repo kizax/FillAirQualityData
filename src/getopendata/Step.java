@@ -154,10 +154,10 @@ public class Step {
                         LogUtils.log(logFileWriter, String.format("%1$s\tLine %2$d air quality data %3$s / %4$s at %5$s %6$d o'clock filled whth %7$f",
                                 TimestampUtils.getTimestampStr(), airQualityData.getLineNum(), airQualityData.getSiteName(), airQualityData.getItemName(), airQualityData.getMonitorDateStr(), index, avg));
                     } else {
-                        LogUtils.log(logFileWriter, String.format("%1$s\tLine %2$d air quality data %3$s / %4$s at %5$s %6$d o'clock has leaked value but not filled",
-                                TimestampUtils.getTimestampStr(), airQualityData.getLineNum(), airQualityData.getSiteName(), airQualityData.getItemName(), airQualityData.getMonitorDateStr(), index));
-                        LogUtils.log(logFileWriter, String.format("%1$s\tValid value count: %2$d, %3$s",
-                                TimestampUtils.getTimestampStr(), validValueCount, convertArrayToStr(refValues)));
+//                        LogUtils.log(logFileWriter, String.format("%1$s\tLine %2$d air quality data %3$s / %4$s at %5$s %6$d o'clock has leaked value but not filled",
+//                                TimestampUtils.getTimestampStr(), airQualityData.getLineNum(), airQualityData.getSiteName(), airQualityData.getItemName(), airQualityData.getMonitorDateStr(), index));
+//                        LogUtils.log(logFileWriter, String.format("%1$s\tValid value count: %2$d, %3$s",
+//                                TimestampUtils.getTimestampStr(), validValueCount, convertArrayToStr(refValues)));
 
                     }
                 }

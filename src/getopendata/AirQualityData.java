@@ -30,7 +30,8 @@ public class AirQualityData {
         this.siteName = recordStrArray[0];
 
         String dataTimeStr = recordStrArray[1];
-        DateFormat dataFromat = new SimpleDateFormat("yyyy/M/d");
+//        DateFormat dataFromat = new SimpleDateFormat("yyyy/M/d");
+        DateFormat dataFromat = new SimpleDateFormat("yyyy-MM-dd");
         this.monitorDate = dataFromat.parse(dataTimeStr);
 
         this.itemName = recordStrArray[2];
