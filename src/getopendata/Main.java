@@ -13,7 +13,7 @@ public class Main {
 
         //建立log file
         FileWriter logFileWriter = Step.createFileWriter(logFileName, true);
-        LogUtils.log(logFileWriter, String.format("%1$s\tStart air quality open data downloader!", TimestampUtils.getTimestampStr()));
+        LogUtils.log(logFileWriter, String.format("%1$s\tStart fill air quality data!", TimestampUtils.getTimestampStr()));
 
         //建立itemMap
         Map<String, Integer> itemMap = new HashMap();
