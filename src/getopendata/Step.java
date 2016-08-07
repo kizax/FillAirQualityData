@@ -167,6 +167,32 @@ public class Step {
 
     }
 
+    public static ArrayList<String> listFilesForFolder(String  folderName) {
+
+        File folder = new File(folderName);
+        
+        ArrayList<String> fileNameList = new ArrayList();
+        for (final File fileEntry : folder.listFiles()) {
+            if (fileEntry.isDirectory()) {
+            } else {
+                String fileName = fileEntry.getName();
+                String extension = "";
+
+                int i = fileName.lastIndexOf('.');
+                if (i > 0) {
+                    extension = fileName.substring(i + 1);
+                }
+
+                if (extension.equals("csv")) {
+                    fileNameList.add(fileName);
+                }
+
+            }
+        }
+        
+        return fileNameList;
+    }
+
     public static void writeFile(FileWriter resultFileWriter,
             ArrayList<AirQualityData> airQualityDataList, FileWriter logFileWriter) {
         try {

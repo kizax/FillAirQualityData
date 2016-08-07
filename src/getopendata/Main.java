@@ -7,8 +7,6 @@ import java.util.ArrayList;
 
 public class Main {
 
-    private static final String csvFileName = "./epa_air_2015.csv";
-    private static final String csvResultFileName = "./record/airQualityData.csv";
     private static final String logFileName = "./record/log.txt";
 
     public static void main(String[] args) {
@@ -33,22 +31,47 @@ public class Main {
 
         itemMap.put("RH", 38);
 
-        //讀檔        
-        ArrayList<AirQualityData> airQualityDataList = Step.readFile(csvFileName, logFileWriter);
+        ArrayList<String> fileNameList = Step.listFilesForFolder("./");
 
-        //建立hashMap<String,AirQualityData>   測站 日期 測項 -> airQualityData
-        Map<String, AirQualityData> airQualityDataMap = Step.generateAirQualityDataMap(airQualityDataList, logFileWriter);
+        for (String fileName : fileNameList) {
 
-        //開始補值
-        Step.fillUpAirQualityData(airQualityDataMap, airQualityDataList, logFileWriter);
+            String csvResultFileName = "./record/" + stripExtension(fileName) + "_afterFillValue.csv";
 
-        //建立紀錄檔
-        LogUtils.log(logFileWriter, String.format("%1$s\tNow start writing data into file", TimestampUtils.getTimestampStr()));
-        FileWriter csvResultFileWriter = Step.createFileWriter(csvResultFileName, false);
+            //讀檔        
+            ArrayList<AirQualityData> airQualityDataList = Step.readFile(fileName, logFileWriter);
 
-        //寫檔
-        Step.writeFile(csvResultFileWriter, airQualityDataList, logFileWriter);
+            //建立hashMap<String,AirQualityData>   測站 日期 測項 -> airQualityData
+            Map<String, AirQualityData> airQualityDataMap = Step.generateAirQualityDataMap(airQualityDataList, logFileWriter);
 
+            //開始補值
+            Step.fillUpAirQualityData(airQualityDataMap, airQualityDataList, logFileWriter);
+
+            //建立紀錄檔
+            LogUtils.log(logFileWriter, String.format("%1$s\tNow start writing data into file", TimestampUtils.getTimestampStr()));
+            FileWriter csvResultFileWriter = Step.createFileWriter(csvResultFileName, false);
+
+            //寫檔
+            Step.writeFile(csvResultFileWriter, airQualityDataList, logFileWriter);
+        }
+    }
+
+    private static String stripExtension(String str) {
+        // Handle null case specially.
+
+        if (str == null) {
+            return null;
+        }
+
+        // Get position of last '.'.
+        int pos = str.lastIndexOf(".");
+
+        // If there wasn't any '.' just return the string as is.
+        if (pos == -1) {
+            return str;
+        }
+
+        // Otherwise return the string, up to the dot.
+        return str.substring(0, pos);
     }
 
 }
