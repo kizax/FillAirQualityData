@@ -2,12 +2,11 @@ obproject/private/
 builprivate/
 build/
 nbbuild/
-dist/
+dist/record/
 nbdist/
 nbactions.xml
 .nb-gradle//
 nbbuild/
-dist/
 nbdist/
 nbactions.xml
 .nb-gradle/
@@ -15,3 +14,6 @@ nbactions.xml
 /dbsetting
 *.csv
 !testdata/testdata.csv
+!dist\FillAirQualityData.bat
+!dist\epa_air_2015.csv
+!dist\testdata.csv
