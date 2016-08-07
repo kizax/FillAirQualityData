@@ -5,9 +5,9 @@
  */
 package getopendata;
 
-import java.io.File;
+import java.io.FileWriter;
 import java.util.ArrayList;
-import java.util.Scanner;
+import java.util.Map;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -46,10 +46,28 @@ public class AirQualityDataJsonParserTest {
     @Test
     public void testGetAirQualityDataList() throws Exception {
         System.out.println("getAirQualityDataList");
-        String jsonStr = new Scanner(new File("./testdata/airQualityData.json")).next();
-        String expResult = "2016-02-02 14:49:28, 1, 1100.0, , 222233738.0, 337-FP, 1, 0, 111520.0, , 0, 121.557663, 25.042852, 1.020452, 174.100006, 0, ";
-        ArrayList<AirQualityData> resultBusEventDataList = AirQualityJsonParser.getAirQualityDataList(jsonStr);
-        String result = resultBusEventDataList.get(0).toString();
+        String logFileName = "./record/log.txt";
+        FileWriter logFileWriter = Step.createFileWriter(logFileName, true);
+
+        //讀檔        
+        ArrayList<AirQualityData> airQualityDataList = Step.readFile("./testdata/testdata.csv", logFileWriter);
+
+        //建立hashMap<String,AirQualityData>   測站 日期 測項 -> airQualityData
+        Map<String, AirQualityData> airQualityDataMap = Step.generateAirQualityDataMap(airQualityDataList, logFileWriter);
+
+        //開始補值
+        Step.fillUpAirQualityData(airQualityDataMap, airQualityDataList, logFileWriter);
+
+        String expResult = "Erlin, 2015/1/2,  PM2.5, 5.0, 5.0, 6.0, 5.0, 5.0, 4.0, 4.0, 4.0, 4.0, , , 5.0, 5.0, 4.0, 3.0, 2.0, 2.0, 2.0, 3.0, 3.0, 4.0, 3.0, 5.0, 5.0";
+        String result = airQualityDataList.get(1).getRecordStr();
+        assertEquals(expResult, result);
+
+        expResult = "Erlin, 2015/1/9,  PM2.5, 8.0, 7.0, 7.0, 5.0, 5.0, 5.0, 6.0, 5.0, 6.0, 4.0, 5.0, 4.0, 3.0, 3.0, 5.0, 4.0, 4.0, 3.0, 3.0, 4.0, 5.0, 5.0, 6.0, 5.0";
+        result = airQualityDataList.get(8).getRecordStr();
+        assertEquals(expResult, result);
+
+        expResult = "Erlin, 2015/1/24,  PM2.5, 6.0, 6.0, 5.0, 5.0, 4.0, 4.0, 4.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 4.0, 3.0, 2.0, 3.0, 3.0, 5.0, 6.0, 7.0, 7.0, 8.0, 9.0";
+        result = airQualityDataList.get(23).getRecordStr();
         assertEquals(expResult, result);
 
     }

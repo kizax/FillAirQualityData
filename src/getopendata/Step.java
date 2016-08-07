@@ -245,7 +245,7 @@ public class Step {
 
         float monitorValue = AirQualityData.NOT_SET;
         try {
-            monitorValue = refAirQualityData.getMonitorValue(index - 1);
+            monitorValue = refAirQualityData.getMonitorValue(index);
         } catch (ArrayIndexOutOfBoundsException e) {
         } catch (NullPointerException e) {
         }
