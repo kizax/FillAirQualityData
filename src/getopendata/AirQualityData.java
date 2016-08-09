@@ -163,12 +163,12 @@ public class AirQualityData {
     }
 
     public String getRecordStr() {
-        String recordStr = String.format("%1$s, %2$s, %3$s, "
-                + "%4$s, %5$s, %6$s, %7$s, %8$s, "
-                + "%9$s, %10$s, %11$s, %12$s, %13$s, "
-                + "%14$s, %15$s, %16$s, %17$s, %18$s, "
-                + "%19$s, %20$s, %21$s, %22$s, %23$s, "
-                + "%24$s, %25$s, %26$s, %27$s", getSiteName(), getMonitorDateStr(), getItemName(),
+        String recordStr = String.format("%1$s,%2$s,%3$s,"
+                + "%4$s,%5$s,%6$s,%7$s,%8$s,"
+                + "%9$s,%10$s,%11$s,%12$s,%13$s,"
+                + "%14$s,%15$s,%16$s,%17$s,%18$s,"
+                + "%19$s,%20$s,%21$s,%22$s,%23$s,"
+                + "%24$s,%25$s,%26$s,%27$s", getSiteName(), getMonitorDateStr(), getItemName(),
                 getMonitorValueStr(monitorValues[0]), getMonitorValueStr(monitorValues[1]), getMonitorValueStr(monitorValues[2]),
                 getMonitorValueStr(monitorValues[3]), getMonitorValueStr(monitorValues[4]), getMonitorValueStr(monitorValues[5]),
                 getMonitorValueStr(monitorValues[6]), getMonitorValueStr(monitorValues[7]), getMonitorValueStr(monitorValues[8]),

@@ -58,16 +58,20 @@ public class AirQualityDataJsonParserTest {
         //開始補值
         Step.fillUpAirQualityData(airQualityDataMap, airQualityDataList, logFileWriter);
 
-        String expResult = "Erlin, 2015/1/2,  PM2.5, 5.0, 5.0, 6.0, 5.0, 5.0, 4.0, 4.0, 4.0, 4.0, , , 5.0, 5.0, 4.0, 3.0, 2.0, 2.0, 2.0, 3.0, 3.0, 4.0, 3.0, 5.0, 5.0";
+        String expResult = "Erlin,2015/1/2,PM2.5,5.0,5.0,6.0,5.0,5.0,4.0,4.0,4.0,4.0,,,5.0,5.0,4.0,3.0,2.0,2.0,2.0,3.0,3.0,4.0,3.0,5.0,5.0";
         String result = airQualityDataList.get(1).getRecordStr();
         assertEquals(expResult, result);
 
-        expResult = "Erlin, 2015/1/9,  PM2.5, 8.0, 7.0, 7.0, 5.0, 5.0, 5.0, 6.0, 5.0, 6.0, 4.0, 5.0, 4.0, 3.0, 3.0, 5.0, 4.0, 4.0, 3.0, 3.0, 4.0, 5.0, 5.0, 6.0, 5.0";
+        expResult = "Erlin,2015/1/9,PM2.5,8.0,7.0,7.0,5.0,5.0,5.0,6.0,5.0,6.0,4.0,5.0,4.0,3.0,3.0,5.0,4.0,4.0,3.0,3.0,4.0,5.0,5.0,6.0,5.0";
         result = airQualityDataList.get(8).getRecordStr();
         assertEquals(expResult, result);
 
-        expResult = "Erlin, 2015/1/24,  PM2.5, 6.0, 6.0, 5.0, 5.0, 4.0, 4.0, 4.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 4.0, 3.0, 2.0, 3.0, 3.0, 5.0, 6.0, 7.0, 7.0, 8.0, 9.0";
+        expResult = "Erlin,2015/1/24,PM2.5,6.0,6.0,5.0,5.0,4.0,4.0,4.0,5.0,5.0,5.0,5.0,5.0,5.0,4.0,3.0,2.0,3.0,3.0,5.0,6.0,7.0,7.0,8.0,9.0";
         result = airQualityDataList.get(23).getRecordStr();
+        assertEquals(expResult, result);
+        
+        expResult = "Erlin,2015/2/27,PM2.5,5.0,5.0,6.0,4.0,3.0,2.0,9.0,8.0,5.0,5.0,5.0,5.0,4.0,3.0,3.0,7.0,8.0,2.0,2.0,3.0,3.0,3.0,4.0,4.0";
+        result = airQualityDataList.get(84).getRecordStr();
         assertEquals(expResult, result);
 
     }

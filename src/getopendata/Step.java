@@ -79,7 +79,7 @@ public class Step {
             ArrayList<AirQualityData> airQualityDataList, FileWriter logFileWriter) {
 
         int numOfNotFilledValue = 0;
-        
+
         String key;
         for (AirQualityData airQualityData : airQualityDataList) {
 
@@ -131,11 +131,14 @@ public class Step {
                     Calendar calendar = Calendar.getInstance();
                     calendar.setTime(airQualityData.getMonitorDate());
                     int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
-                    
+                    int weekOfYear = calendar.get(Calendar.WEEK_OF_YEAR);
+
                     Calendar prevYearCalendar = Calendar.getInstance();
                     prevYearCalendar.setTime(airQualityData.getMonitorDate());
                     prevYearCalendar.add(Calendar.YEAR, -1);
+
                     prevYearCalendar.set(Calendar.DAY_OF_WEEK, dayOfWeek);
+                    prevYearCalendar.set(Calendar.WEEK_OF_YEAR, weekOfYear);
                     Date prevYear = prevYearCalendar.getTime();
                     key = String.format("%1$s %2$s %3$s",
                             airQualityData.getSiteName(), TimestampUtils.dateToStr(prevYear),
@@ -172,15 +175,15 @@ public class Step {
             }
 
         }
-        
+
         return numOfNotFilledValue;
 
     }
 
-    public static ArrayList<String> listFilesForFolder(String  folderName) {
+    public static ArrayList<String> listFilesForFolder(String folderName) {
 
         File folder = new File(folderName);
-        
+
         ArrayList<String> fileNameList = new ArrayList();
         for (final File fileEntry : folder.listFiles()) {
             if (fileEntry.isDirectory()) {
@@ -199,7 +202,7 @@ public class Step {
 
             }
         }
-        
+
         return fileNameList;
     }
 
