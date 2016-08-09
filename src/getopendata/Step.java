@@ -128,9 +128,14 @@ public class Step {
                     refValues[6] = getMonitorValue(airQualityData, lastWeekAirQualityData, index + 1, "前一週後一小時", logFileWriter);
 
                     //前一年同週同時、前一年同週前一小時、前一年同週後一小時
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.setTime(airQualityData.getMonitorDate());
+                    int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
+                    
                     Calendar prevYearCalendar = Calendar.getInstance();
                     prevYearCalendar.setTime(airQualityData.getMonitorDate());
                     prevYearCalendar.add(Calendar.YEAR, -1);
+                    prevYearCalendar.set(Calendar.DAY_OF_WEEK, dayOfWeek);
                     Date prevYear = prevYearCalendar.getTime();
                     key = String.format("%1$s %2$s %3$s",
                             airQualityData.getSiteName(), TimestampUtils.dateToStr(prevYear),
