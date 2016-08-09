@@ -75,9 +75,11 @@ public class Step {
         return airQualityDataMap;
     }
 
-    public static void fillUpAirQualityData(Map<String, AirQualityData> airQualityDataMap,
+    public static int fillUpAirQualityData(Map<String, AirQualityData> airQualityDataMap,
             ArrayList<AirQualityData> airQualityDataList, FileWriter logFileWriter) {
 
+        int numOfNotFilledValue = 0;
+        
         String key;
         for (AirQualityData airQualityData : airQualityDataList) {
 
@@ -154,6 +156,7 @@ public class Step {
                         LogUtils.log(logFileWriter, String.format("%1$s\tLine %2$d air quality data %3$s / %4$s at %5$s %6$d o'clock filled with %7$f",
                                 TimestampUtils.getTimestampStr(), airQualityData.getLineNum(), airQualityData.getSiteName(), airQualityData.getItemName(), airQualityData.getMonitorDateStr(), index, avg));
                     } else {
+                        numOfNotFilledValue++;
 //                        LogUtils.log(logFileWriter, String.format("%1$s\tLine %2$d air quality data %3$s / %4$s at %5$s %6$d o'clock has leaked value but not filled",
 //                                TimestampUtils.getTimestampStr(), airQualityData.getLineNum(), airQualityData.getSiteName(), airQualityData.getItemName(), airQualityData.getMonitorDateStr(), index));
 //                        LogUtils.log(logFileWriter, String.format("%1$s\tValid value count: %2$d, %3$s",
@@ -164,6 +167,8 @@ public class Step {
             }
 
         }
+        
+        return numOfNotFilledValue;
 
     }
 

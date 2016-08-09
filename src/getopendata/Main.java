@@ -44,7 +44,22 @@ public class Main {
             Map<String, AirQualityData> airQualityDataMap = Step.generateAirQualityDataMap(airQualityDataList, logFileWriter);
 
             //開始補值
-            Step.fillUpAirQualityData(airQualityDataMap, airQualityDataList, logFileWriter);
+            int numOfNotFilledValueLastTime = Integer.MAX_VALUE;
+            int numOfNotFilledValue;
+            int roundCount = 0;
+            while (true) {
+                roundCount++;
+                LogUtils.log(logFileWriter, String.format("%1$s\tStart filling data, round %2$d", TimestampUtils.getTimestampStr(), roundCount));
+                numOfNotFilledValue = Step.fillUpAirQualityData(airQualityDataMap, airQualityDataList, logFileWriter);
+                LogUtils.log(logFileWriter, String.format("%1$s\tRound %2$d still have %3$d not filled value", TimestampUtils.getTimestampStr(), roundCount, numOfNotFilledValue));
+
+                if (numOfNotFilledValue != numOfNotFilledValueLastTime) {
+                    numOfNotFilledValueLastTime = numOfNotFilledValue;
+                } else {
+                     LogUtils.log(logFileWriter, String.format("%1$s\tCannot fill sothing more values, break", TimestampUtils.getTimestampStr()));
+                    break;
+                }
+            }
 
             //建立紀錄檔
             LogUtils.log(logFileWriter, String.format("%1$s\tNow start writing data into file", TimestampUtils.getTimestampStr()));
