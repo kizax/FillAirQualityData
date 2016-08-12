@@ -185,6 +185,12 @@ public class AirQualityData {
         String timeStr = timeFormat.format(getMonitorDate());
         return timeStr;
     }
+    
+    String getMonitorDateStrWithDayOfWeek() {
+        SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy/M/d EEE"); //2016/1/15
+        String timeStr = timeFormat.format(getMonitorDate());
+        return timeStr;
+    }
 
     private float strToFloat(String str) {
         float value = NOT_SET;

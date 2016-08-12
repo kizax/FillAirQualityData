@@ -27,4 +27,12 @@ public class TimestampUtils {
 
         return timestampStr;
     }
+    
+        public static String dateToStrWithDayOfWeek(Date date) {
+        SimpleDateFormat timestampFormat = new SimpleDateFormat("yyyy/M/d"); //2016/1/15
+        SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy/M/d EEE"); //2016/1/15
+        String timeStr = timeFormat.format(date);
+
+        return timeStr;
+    }
 }

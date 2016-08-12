@@ -136,18 +136,26 @@ public class Step {
                     Calendar prevYearCalendar = Calendar.getInstance();
                     prevYearCalendar.setTime(airQualityData.getMonitorDate());
                     prevYearCalendar.add(Calendar.YEAR, -1);
-
-                    prevYearCalendar.set(Calendar.DAY_OF_WEEK, dayOfWeek);
-                    prevYearCalendar.set(Calendar.WEEK_OF_YEAR, weekOfYear);
                     Date prevYear = prevYearCalendar.getTime();
+                    int prevYearDayOfWeek = prevYearCalendar.get(Calendar.DAY_OF_WEEK);
+                    
+                    int diff =  dayOfWeek - prevYearDayOfWeek;
+                    prevYearCalendar.add(Calendar.DATE, diff);
+                    Date prevYearWithSameDayOfWeek = prevYearCalendar.getTime();
+                    
                     key = String.format("%1$s %2$s %3$s",
-                            airQualityData.getSiteName(), TimestampUtils.dateToStr(prevYear),
+                            airQualityData.getSiteName(), TimestampUtils.dateToStr(prevYearWithSameDayOfWeek),
                             airQualityData.getItemName());
 
                     AirQualityData prevYearAirQualityData = airQualityDataMap.get(key);
                     refValues[7] = getMonitorValue(airQualityData, prevYearAirQualityData, index - 1, "前一年同週前一小時", logFileWriter);
                     refValues[8] = getMonitorValue(airQualityData, prevYearAirQualityData, index, "前一年同週同一小時", logFileWriter);
                     refValues[9] = getMonitorValue(airQualityData, prevYearAirQualityData, index + 1, "前一年同週後一小時", logFileWriter);
+
+//                    LogUtils.log(logFileWriter, String.format("%1$s\tLine %2$d air quality data %3$s / %4$s at %5$s %6$d o'clock call %7$s day's data",
+//                            TimestampUtils.getTimestampStr(), airQualityData.getLineNum(), airQualityData.getSiteName(), 
+//                            airQualityData.getItemName(), airQualityData.getMonitorDateStrWithDayOfWeek(), index, 
+//                            TimestampUtils.dateToStrWithDayOfWeek(prevYearWithSameDayOfWeek)));
 
                     int validValueCount = 0;
                     float sum = 0;
