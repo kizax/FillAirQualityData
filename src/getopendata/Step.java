@@ -26,8 +26,8 @@ import java.util.logging.Logger;
  */
 public class Step {
 
-    public static ArrayList<AirQualityData> readFile(String fileName, FileWriter logFileWriter) {
-        ArrayList<AirQualityData> airQualityDataList = new ArrayList<>();
+    public static ArrayList<AirQualityRecordData> readFile(String fileName, FileWriter logFileWriter) {
+        ArrayList<AirQualityRecordData> airQualityDataList = new ArrayList<>();
         try {
             LogUtils.log(logFileWriter, String.format("%1$s\tStart reading the record file", TimestampUtils.getTimestampStr()));
 
@@ -40,7 +40,7 @@ public class Step {
                 String recordStr = bufferedReader.readLine();
                 lineCount++;
                 try {
-                    AirQualityData airQualityData = new AirQualityData(recordStr);
+                    AirQualityRecordData airQualityData = new AirQualityRecordData(recordStr);
                     airQualityData.setLineNum(lineCount);
                     airQualityDataList.add(airQualityData);
 
@@ -62,10 +62,10 @@ public class Step {
         return airQualityDataList;
     }
 
-    public static Map<String, AirQualityData> generateAirQualityDataMap(ArrayList<AirQualityData> airQualityDataList, FileWriter logFileWriter) {
+    public static Map<String, AirQualityRecordData> generateAirQualityDataMap(ArrayList<AirQualityRecordData> airQualityDataList, FileWriter logFileWriter) {
         //建立hashMap<String,AirQualityData>   測站 日期 測項 -> airQualityData
-        Map<String, AirQualityData> airQualityDataMap = new HashMap();
-        for (AirQualityData airQualityData : airQualityDataList) {
+        Map<String, AirQualityRecordData> airQualityDataMap = new HashMap();
+        for (AirQualityRecordData airQualityData : airQualityDataList) {
             String key = String.format("%1$s %2$s %3$s",
                     airQualityData.getSiteName(), airQualityData.getMonitorDateStr(),
                     airQualityData.getItemName());
@@ -75,16 +75,16 @@ public class Step {
         return airQualityDataMap;
     }
 
-    public static int fillUpAirQualityData(Map<String, AirQualityData> airQualityDataMap,
-            ArrayList<AirQualityData> airQualityDataList, FileWriter logFileWriter) {
+    public static int fillUpAirQualityData(Map<String, AirQualityRecordData> airQualityDataMap,
+            ArrayList<AirQualityRecordData> airQualityDataList, FileWriter logFileWriter) {
 
         int numOfNotFilledValue = 0;
 
         String key;
-        for (AirQualityData airQualityData : airQualityDataList) {
+        for (AirQualityRecordData airQualityData : airQualityDataList) {
 
             for (int index = 0; index < 24; index++) {
-                if (airQualityData.getMonitorValue(index) == AirQualityData.NOT_SET) {
+                if (airQualityData.getMonitorValue(index) == AirQualityRecordData.NOT_SET) {
 
 //                    LogUtils.log(logFileWriter, String.format(
 //                            "%1$s\tLine %2$d air quality data %3$s / %4$s at %5$s %6$d o'clock has leaked value",
@@ -93,7 +93,7 @@ public class Step {
                     //初始化參考值
                     float[] refValues = new float[10];
                     for (int i = 0; i < 10; i++) {
-                        refValues[i] = AirQualityData.NOT_SET;
+                        refValues[i] = AirQualityRecordData.NOT_SET;
                     }
 
                     //   同一測站同日前一小時
@@ -108,7 +108,7 @@ public class Step {
                             airQualityData.getSiteName(), TimestampUtils.dateToStr(yesterday),
                             airQualityData.getItemName());
 
-                    AirQualityData yesterdayAirQualityData = airQualityDataMap.get(key);
+                    AirQualityRecordData yesterdayAirQualityData = airQualityDataMap.get(key);
                     refValues[1] = getMonitorValue(airQualityData, yesterdayAirQualityData, index - 1, "前一天前一小時", logFileWriter);
                     refValues[2] = getMonitorValue(airQualityData, yesterdayAirQualityData, index, "前一天同一小時", logFileWriter);
                     refValues[3] = getMonitorValue(airQualityData, yesterdayAirQualityData, index + 1, "前一天後一小時", logFileWriter);
@@ -122,7 +122,7 @@ public class Step {
                             airQualityData.getSiteName(), TimestampUtils.dateToStr(lastWeek),
                             airQualityData.getItemName());
 
-                    AirQualityData lastWeekAirQualityData = airQualityDataMap.get(key);
+                    AirQualityRecordData lastWeekAirQualityData = airQualityDataMap.get(key);
                     refValues[4] = getMonitorValue(airQualityData, lastWeekAirQualityData, index - 1, "前一週前一小時", logFileWriter);
                     refValues[5] = getMonitorValue(airQualityData, lastWeekAirQualityData, index, "前一週同一小時", logFileWriter);
                     refValues[6] = getMonitorValue(airQualityData, lastWeekAirQualityData, index + 1, "前一週後一小時", logFileWriter);
@@ -147,7 +147,7 @@ public class Step {
                             airQualityData.getSiteName(), TimestampUtils.dateToStr(prevYearWithSameDayOfWeek),
                             airQualityData.getItemName());
 
-                    AirQualityData prevYearAirQualityData = airQualityDataMap.get(key);
+                    AirQualityRecordData prevYearAirQualityData = airQualityDataMap.get(key);
                     refValues[7] = getMonitorValue(airQualityData, prevYearAirQualityData, index - 1, "前一年同週前一小時", logFileWriter);
                     refValues[8] = getMonitorValue(airQualityData, prevYearAirQualityData, index, "前一年同週同一小時", logFileWriter);
                     refValues[9] = getMonitorValue(airQualityData, prevYearAirQualityData, index + 1, "前一年同週後一小時", logFileWriter);
@@ -160,7 +160,7 @@ public class Step {
                     int validValueCount = 0;
                     float sum = 0;
                     for (int i = 0; i < 10; i++) {
-                        if (refValues[i] != AirQualityData.NOT_SET) {
+                        if (refValues[i] != AirQualityRecordData.NOT_SET) {
                             sum += refValues[i];
                             validValueCount++;
                         }
@@ -215,7 +215,7 @@ public class Step {
     }
 
     public static void writeFile(FileWriter resultFileWriter,
-            ArrayList<AirQualityData> airQualityDataList, FileWriter logFileWriter) {
+            ArrayList<AirQualityRecordData> airQualityDataList, FileWriter logFileWriter) {
         try {
             //寫入檔頭BOM，避免EXCEL開啟變成亂碼
             byte[] bom = new byte[]{(byte) 0xEF, (byte) 0xBB, (byte) 0xBF};
@@ -223,7 +223,7 @@ public class Step {
 
             //寫入紀錄檔
             int writingCount = 0;
-            for (AirQualityData airQualityData : airQualityDataList) {
+            for (AirQualityRecordData airQualityData : airQualityDataList) {
                 writeCsvFile(resultFileWriter, airQualityData.getRecordStr());
                 writingCount++;
             }
@@ -262,15 +262,15 @@ public class Step {
         writerThread.start();
     }
 
-    private static float getMonitorValue(AirQualityData airQualityData, AirQualityData refAirQualityData, int index, String str, FileWriter logFileWriter) {
+    private static float getMonitorValue(AirQualityRecordData airQualityData, AirQualityRecordData refAirQualityData, int index, String str, FileWriter logFileWriter) {
 
-        float monitorValue = AirQualityData.NOT_SET;
+        float monitorValue = AirQualityRecordData.NOT_SET;
         try {
             monitorValue = refAirQualityData.getMonitorValue(index);
         } catch (ArrayIndexOutOfBoundsException e) {
         } catch (NullPointerException e) {
         }
-        if (monitorValue == AirQualityData.NOT_SET) {
+        if (monitorValue == AirQualityRecordData.NOT_SET) {
 //            LogUtils.log(logFileWriter, String.format("%1$s\tLine %2$d air quality data %3$s / %4$s at %5$s %6$d o'clock doesn't have %7$s value",
 //                    TimestampUtils.getTimestampStr(), airQualityData.getLineNum(), airQualityData.getSiteName(),
 //                    airQualityData.getItemName(), airQualityData.getMonitorDateStr(), index, str));

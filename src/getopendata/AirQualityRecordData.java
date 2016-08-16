@@ -14,7 +14,7 @@ import java.util.Date;
  *
  * @author kizax
  */
-public class AirQualityData {
+public class AirQualityRecordData {
 
     public final static float NOT_SET = -99999;
 
@@ -24,7 +24,7 @@ public class AirQualityData {
     private float[] monitorValues;
     private int lineNum;
 
-    public AirQualityData(String recordStr) throws ParseException, ArrayIndexOutOfBoundsException {
+    public AirQualityRecordData(String recordStr) throws ParseException, ArrayIndexOutOfBoundsException {
         String[] recordStrArray = recordStr.split(",");
 
         this.siteName = recordStrArray[0];

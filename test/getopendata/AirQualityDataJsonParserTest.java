@@ -50,10 +50,10 @@ public class AirQualityDataJsonParserTest {
         FileWriter logFileWriter = Step.createFileWriter(logFileName, true);
 
         //讀檔        
-        ArrayList<AirQualityData> airQualityDataList = Step.readFile("./testdata/testdata.csv", logFileWriter);
+        ArrayList<AirQualityRecordData> airQualityDataList = Step.readFile("./testdata/testdata.csv", logFileWriter);
 
         //建立hashMap<String,AirQualityData>   測站 日期 測項 -> airQualityData
-        Map<String, AirQualityData> airQualityDataMap = Step.generateAirQualityDataMap(airQualityDataList, logFileWriter);
+        Map<String, AirQualityRecordData> airQualityDataMap = Step.generateAirQualityDataMap(airQualityDataList, logFileWriter);
 
         //開始補值
         Step.fillUpAirQualityData(airQualityDataMap, airQualityDataList, logFileWriter);

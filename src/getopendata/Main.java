@@ -38,10 +38,10 @@ public class Main {
             String csvResultFileName = "./record/" + stripExtension(fileName) + "_afterFillValue.csv";
 
             //讀檔        
-            ArrayList<AirQualityData> airQualityDataList = Step.readFile(fileName, logFileWriter);
+            ArrayList<AirQualityRecordData> airQualityDataList = Step.readFile(fileName, logFileWriter);
 
             //建立hashMap<String,AirQualityData>   測站 日期 測項 -> airQualityData
-            Map<String, AirQualityData> airQualityDataMap = Step.generateAirQualityDataMap(airQualityDataList, logFileWriter);
+            Map<String, AirQualityRecordData> airQualityDataMap = Step.generateAirQualityDataMap(airQualityDataList, logFileWriter);
 
             //開始補值
             int numOfNotFilledValueLastTime = Integer.MAX_VALUE;
